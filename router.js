@@ -1,12 +1,14 @@
 var Omdb = require("./omdb");
 var render = require("./render");
 
+var commonHeaders = {'Content-Type' : 'text/html'};
+
 //Manejar las rutas HTTP para GET y POST
 function home(request, response){
   //Si la url == "/" && el verbo es GET
   if(request.url === "/"){
     //Mostramos search.html
-    response.writeHead(200, {'Content-Type': 'text/plain'});
+    response.writeHead(200, commonHeaders);
     render.view("header",{}, response);
     render.view("search", {}, response);
     render.view("footer", {}, response);
@@ -22,7 +24,7 @@ function result(request, response){
   var omdbSearch = request.url.replace("/", "");
 
   if (omdbSearch.length > 0){
-    response.writeHead(200, {'Content-Type': 'text/plain'});
+    response.writeHead(200, commonHeaders);
     render.view("header", {}, response);
 
     //Obtenemos el JSON del API de omdb
