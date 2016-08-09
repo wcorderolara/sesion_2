@@ -36,7 +36,8 @@ function result(request, response){
         genre: resultJSON.Genre,
         awards: resultJSON.Awards,
         rating: resultJSON.imdbRating,
-        plot: resultJSON.Plot
+        plot: resultJSON.Plot,
+        poster: resultJSON.Poster
       }
 
       response.write(values.title + ',' + values.plot + ".\n");
