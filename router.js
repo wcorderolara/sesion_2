@@ -1,5 +1,6 @@
 var Omdb = require("./omdb");
 var render = require("./render");
+var querystring = require("querystring");
 
 var commonHeaders = {'Content-Type' : 'text/html'};
 
@@ -13,9 +14,19 @@ function home(request, response){
     render.view("search", {}, response);
     render.view("footer", {}, response);
     response.end();
+  }else{
+    //Si la url == "/" && el verbo es POST
+
+    //Obtenemos la data que esta siendo enviada del body
+    request.on("data", function(postBody){
+      //extraemos el texto buscado
+      var query = querystring.parse(postBody.toString());
+      //Redireccionamos hacia /:omdbSearch
+      response.writeHead(303, {"Location": "/" + query.omdbSearch});
+      response.end();
+    })
+
   }
-  //Si la url == "/" && el verbo es POST
-    //Redireccionamos hacia /:omdbSearch
 }
 
 //Manejar la peticion HTTP GET para la ruta /:omdbSearch eje. /Batman
