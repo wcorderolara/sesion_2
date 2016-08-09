@@ -9,23 +9,25 @@ function home(request, response){
   //Si la url == "/" && el verbo es GET
   if(request.url === "/"){
     //Mostramos search.html
-    response.writeHead(200, commonHeaders);
-    render.view("header",{}, response);
-    render.view("search", {}, response);
-    render.view("footer", {}, response);
-    response.end();
-  }else{
-    //Si la url == "/" && el verbo es POST
-
-    //Obtenemos la data que esta siendo enviada del body
-    request.on("data", function(postBody){
-      //extraemos el texto buscado
-      var query = querystring.parse(postBody.toString());
-      //Redireccionamos hacia /:omdbSearch
-      response.writeHead(303, {"Location": "/" + query.omdbSearch});
+    if(request.method.toLowerCase() === 'get'){
+      response.writeHead(200, commonHeaders);
+      render.view("header",{}, response);
+      render.view("search", {}, response);
+      render.view("footer", {}, response);
       response.end();
-    })
+    }else{
+      //Si la url == "/" && el verbo es POST
 
+      //Obtenemos la data que esta siendo enviada del body
+      request.on("data", function(postBody){
+        console.log(postBody);
+        //extraemos el texto buscado
+        var query = querystring.parse(postBody.toString());
+        //Redireccionamos hacia /:omdbSearch
+        response.writeHead(303, {"Location": "/" + query.omdbSearch});
+        response.end();
+      });
+    }
   }
 }
 
@@ -39,7 +41,7 @@ function result(request, response){
     render.view("header", {}, response);
 
     //Obtenemos el JSON del API de omdb
-    var omdbResult = new omdb(omdbSearch);
+    var omdbResult = new Omdb(omdbSearch);
     //al ejecutar el evento "end"
     omdbResult.on("end", function (resultJSON){
       //Mostramos result.html
