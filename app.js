@@ -16,7 +16,3 @@ const server = http.createServer(function (request, response){
 server.listen(port, hostname, function () {
   console.log('Servidor corriendo en http://' + hostname + ':'+ port);
 })
-
-//4. Creacion de una funcion que permita el manejo de la lectura de archivos y mezclar los valores
-  // que se leen y obtener un string
-  // sobreescribir los valores de los placeholders en un string

@@ -1,4 +1,5 @@
 var Omdb = require("./omdb");
+var render = require("./render");
 
 //Manejar las rutas HTTP para GET y POST
 function home(request, response){
@@ -6,9 +7,10 @@ function home(request, response){
   if(request.url === "/"){
     //Mostramos search.html
     response.writeHead(200, {'Content-Type': 'text/plain'});
-    response.write("Header\n");
-    response.write("Search\n");
-    response.end("Footer\n");
+    render.view("header",{}, response);
+    render.view("search", {}, response);
+    render.view("footer", {}, response);
+    response.end();
   }
   //Si la url == "/" && el verbo es POST
     //Redireccionamos hacia /:omdbSearch
@@ -21,7 +23,7 @@ function result(request, response){
 
   if (omdbSearch.length > 0){
     response.writeHead(200, {'Content-Type': 'text/plain'});
-    response.write("Header\n");
+    render.view("header", {}, response);
 
     //Obtenemos el JSON del API de omdb
     var omdbResult = new omdb(omdbSearch);
@@ -40,15 +42,18 @@ function result(request, response){
         poster: resultJSON.Poster
       }
 
-      response.write(values.title + ',' + values.plot + ".\n");
-      response.end("Footer\n");
+      render.view("result", values, response);
+      render.view("footer", {}, response);
+      response.end();
     });
 
     //al ejecutar el evento "error"
     omdbResult.on("error", function (error){
         //Mostramos error.html
-        response.write(error.message + "\n");
-        response.end('Footer\n');
+        render.view("error", {errorMessage: error.message}, response);
+        render.view("search", {}, response);
+        render.view("footer", {}, response);
+        response.end();
     })
 
   }
