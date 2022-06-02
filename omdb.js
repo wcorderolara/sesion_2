@@ -14,7 +14,7 @@ function Omdb(searchOmdb){
   omdbEmitter = this;
 
   //Conexion hacia el API de OMDB http://www.omdbapi.com/?t=searchOmdb
-  var request = http.get("http://www.omdbapi.com/?t=" + searchOmdb, function (response){
+  var request = http.get(`http://www.omdbapi.com/?t=${searchOmdb}&apikey=29acc8f3`, function (response){
     var body = "";
 
     if(response.statusCode !== 200){
